@@ -7,9 +7,13 @@ const handleOnSubmit = evt => {
 };
 
 
-const Login = ({ setIsLogin }) => {
+const Login = ({ setIsLogin, login }) => {
     const navigate = useNavigate();
-    setIsLogin(false);
+
+    React.useEffect(() => {
+        setIsLogin(false);
+    }, [setIsLogin]);
+
     const [state, setState] = React.useState({
         correo: '',
         contraseña: ''
@@ -22,13 +26,19 @@ const Login = ({ setIsLogin }) => {
         }));
     };
 
-    const handleOnClick = (action) => {
+    const handleOnClick = async (action) => {
         if (!state.correo || !state.contraseña) {
             alert("Por favor, completa todos los campos");
             return;
         }
-        setIsLogin(true);
-        navigate('/prof');
+        const res = await login({ correo: state.correo, contraseña: state.contraseña });
+        if (res.isLogin == true){
+            setIsLogin(true);
+            navigate('/prof');
+        } else {
+            alert("Correo o contraseña incorrectos");
+            return;
+        }
     }
 
     return (

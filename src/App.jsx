@@ -7,6 +7,8 @@ import Photos from './views/Photos'
 import ResponsiveAppBar from './components/AppBar'
 import { Container } from '@mui/material'
 
+const API_URL = "HTTP://LOCALHOST:3000";
+
 function App() {
   const [isLogin, setIsLogin] = useState(() => {
     const saved = localStorage.getItem('isLogin');
@@ -17,13 +19,28 @@ function App() {
     localStorage.setItem('isLogin', JSON.stringify(isLogin));
   }, [isLogin]);
 
+  const login = async (userData) => {
+    try {
+      const response = await fetch(`${API_URL}/login`, {
+        method: 'POST',
+        headers:{"content-type": "application/json"},
+        body:JSON.stringify(userData)
+      });
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.error("Error during login:", error);
+      throw error;
+    }
+  };
+
   return (
     <>
     <BrowserRouter>
       {isLogin &&<ResponsiveAppBar /> }
       <Container sx={{ pt: '12px'}}>
         <Routes>
-          <Route path="/" element={<Login setIsLogin={setIsLogin} />} />
+          <Route path="/" element={<Login setIsLogin={setIsLogin} login={login} />} />
           <Route path="/prof" element={<Profile />} />
           <Route path="/photos" element={<Photos />} />
         </Routes> 
