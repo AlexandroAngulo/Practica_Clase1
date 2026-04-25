@@ -14,13 +14,13 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 
-const pages = ['Login', 'Profile', 'Photos'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const pages = ['Login', 'Profile', 'Admin'];
+const settings = ['Profile'];
 
 const getPath = (page) =>
   page === 'Login' ? '/' :
   page === 'Profile' ? '/prof' :
-  page === 'Photos' ? '/photos' :
+  page === 'Admin' ? '/admin' :
   '/';
 
 function ResponsiveAppBar() {
@@ -153,7 +153,10 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={() => { if (setting === 'Profile') navigate('/prof'); handleCloseUserMenu(); }}>
+                <MenuItem key={setting} onClick={() => { 
+                  if (setting === 'Profile') navigate('/prof'); 
+                  handleCloseUserMenu(); 
+                }}>
                   <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
                 </MenuItem>
               ))}

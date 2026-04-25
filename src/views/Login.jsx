@@ -7,7 +7,7 @@ const handleOnSubmit = evt => {
 };
 
 
-const Login = ({ setIsLogin, login }) => {
+const Login = ({ setIsLogin, setUser, login }) => {
     const navigate = useNavigate();
 
     React.useEffect(() => {
@@ -15,8 +15,8 @@ const Login = ({ setIsLogin, login }) => {
     }, [setIsLogin]);
 
     const [state, setState] = React.useState({
-        correo: '',
-        contraseña: ''
+        username: '',
+        password: ''
     });
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -27,16 +27,17 @@ const Login = ({ setIsLogin, login }) => {
     };
 
     const handleOnClick = async (action) => {
-        if (!state.correo || !state.contraseña) {
+        if (!state.username || !state.password) {
             alert("Por favor, completa todos los campos");
             return;
         }
-        const res = await login({ correo: state.correo, contraseña: state.contraseña });
+        const res = await login({ username: state.username, password: state.password });
         if (res.isLogin == true){
             setIsLogin(true);
+            setUser(res.user || {});
             navigate('/prof');
         } else {
-            alert("Correo o contraseña incorrectos");
+            alert("Usuario o contraseña incorrectos");
             return;
         }
     }
@@ -47,16 +48,16 @@ const Login = ({ setIsLogin, login }) => {
             <div style={{ width: '400px', margin: '0 auto' }}>
                 <form onSubmit={handleOnSubmit}>
                     <input
-                        type="correo"
-                        name="correo"
-                        value={state.correo}
+                        type="text"
+                        name="username"
+                        value={state.username}
                         onChange={handleChange}
-                        placeholder="correo"
+                        placeholder="usuario o correo"
                     />
                     <input
-                        type="contraseña"
-                        name="contraseña"
-                        value={state.contraseña}
+                        type="password"
+                        name="password"
+                        value={state.password}
                         onChange={handleChange}
                         placeholder="contraseña"
                     />
