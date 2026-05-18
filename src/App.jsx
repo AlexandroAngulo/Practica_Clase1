@@ -19,9 +19,12 @@ function App() {
   }, [isLogin]);
   const [user, setUser] = useState({});
   const [users, setUsers] = useState([]);
+  const [token, setToken] = useState("")
+
   const getUsers = async () => {
     try {
-      const res = await fetch(`${API_URL}/users`);
+      const res = await fetch(`${API_URL}/users`,{
+        headers:{authorization:token}});
       const data = await res.json();
       setUsers(data);
     } catch (error) {
@@ -43,6 +46,7 @@ function App() {
         body: JSON.stringify(userData)
       });
       const result = await response.json();
+      setToken(result.token);
       return result;
     } catch (error) {
       console.error("Error during login:", error);
@@ -52,13 +56,13 @@ function App() {
 
   const delUser = async (id) => {
     setUsers(users.filter((u) => u._id !== id));
-    await fetch(API_URL + '/users/' + id, { method: 'DELETE' });
+    await fetch(API_URL + '/users/' + id, {headers:{authorization:token }, method: 'DELETE' });
   };
   const addUser = async (newUser) => {
     try {
       const response = await fetch(`${API_URL}/users`, {
         method: 'POST',
-        headers: { "content-type": "application/json" },
+        headers: { "content-type": "application/json", authorization:token},
         body: JSON.stringify(newUser)
       });
       const data = await response.json();
