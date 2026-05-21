@@ -7,7 +7,7 @@ import Admin from './views/Admin'
 import ResponsiveAppBar from './components/AppBar'
 import { Container } from '@mui/material'
 
-const API_URL = "http://localhost:8000";
+const API_URL = process.env.REACT_APP_API_URL || "api-66-production.up.railway.app" || "http://localhost:8000";
 
 function App() {
   const [isLogin, setIsLogin] = useState(() => {
