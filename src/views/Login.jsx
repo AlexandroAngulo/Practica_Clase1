@@ -75,4 +75,3 @@ const Login = ({ setIsLogin, setUser, login }) => {
 }
 
 export default Login
-

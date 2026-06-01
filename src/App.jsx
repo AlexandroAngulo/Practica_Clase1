@@ -6,71 +6,14 @@ import Profile from './views/Profile'
 import Admin from './views/Admin'
 import ResponsiveAppBar from './components/AppBar'
 import { Container } from '@mui/material'
+import { Details } from '@mui/icons-material'
+import { useAuth } from './hooks/useAuth'
+import { useAdmin } from './hooks/useAdmin'
 
-//const API_URL = "http://localhost:8000";
-const API_URL = "https://api-66-production.up.railway.app";
 function App() {
-  const [isLogin, setIsLogin] = useState(() => {
-    const saved = localStorage.getItem('isLogin');
-    return saved ? JSON.parse(saved) : false;
-  });
-  useEffect(() => {
-    localStorage.setItem('isLogin', JSON.stringify(isLogin));
-  }, [isLogin]);
-  const [user, setUser] = useState({});
-  const [users, setUsers] = useState([]);
-  const [token, setToken] = useState("")
+  const { isLogin, setIsLogin, token, user, setUser, login } = useAuth();
+  const { users, getUsers, delUser, addUser } = useAdmin(token, isLogin);
 
-  const getUsers = async () => {
-    try {
-      const res = await fetch(`${API_URL}/users`,{
-        headers:{authorization:token}});
-      const data = await res.json();
-      setUsers(data);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    }
-  }
-
-  useEffect(() => {
-    if(isLogin){
-      getUsers();
-    }
-  }, [isLogin]);
-
-  const login = async (userData) => {
-    try {
-      const response = await fetch(`${API_URL}/login`, {
-        method: 'POST',
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(userData)
-      });
-      const result = await response.json();
-      setToken(result.token);
-      return result;
-    } catch (error) {
-      console.error("Error during login:", error);
-      throw error;
-    }
-  };
-
-  const delUser = async (id) => {
-    setUsers(users.filter((u) => u._id !== id));
-    await fetch(API_URL + '/users/' + id, {headers:{authorization:token }, method: 'DELETE' });
-  };
-  const addUser = async (newUser) => {
-    try {
-      const response = await fetch(`${API_URL}/users`, {
-        method: 'POST',
-        headers: { "content-type": "application/json", authorization:token},
-        body: JSON.stringify(newUser)
-      });
-      const data = await response.json();
-      setUsers([...users, data]);
-    } catch (error) {
-      console.error("Error adding user:", error);
-    }
-  };
   return (
     <>
       <BrowserRouter>
@@ -80,6 +23,7 @@ function App() {
             <Route path="/" element={<Login setIsLogin={setIsLogin} setUser={setUser} login={login} />} />
             <Route path="/prof" element={<Profile user={user} />} />
             <Route path="/admin" element={<Admin users={users} delUser={delUser} addUser={addUser} getUsers={getUsers} />} />
+            <Route path='/users/:username' element={<Details user={users} />} />
           </Routes> 
         </Container>
       </BrowserRouter>
