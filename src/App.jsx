@@ -5,8 +5,8 @@ import Login from './views/Login'
 import Profile from './views/Profile'
 import Admin from './views/Admin'
 import ResponsiveAppBar from './components/AppBar'
+import Details from './components/Details'
 import { Container } from '@mui/material'
-import { Details } from '@mui/icons-material'
 import { useAuth } from './hooks/useAuth'
 import { useAdmin } from './hooks/useAdmin'
 
@@ -23,7 +23,7 @@ function App() {
             <Route path="/" element={<Login setIsLogin={setIsLogin} setUser={setUser} login={login} />} />
             <Route path="/prof" element={<Profile user={user} />} />
             <Route path="/admin" element={<Admin users={users} delUser={delUser} addUser={addUser} getUsers={getUsers} />} />
-            <Route path='/users/:username' element={<Details user={users} />} />
+            <Route path='/users/:username' element={<Details users={users} />} />
           </Routes> 
         </Container>
       </BrowserRouter>

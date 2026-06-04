@@ -1,11 +1,15 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import '../App.css'
 
 const User = ({ user, delUser }) => {
     return (
         <tr style={{ borderBottom: '1px solid #eee' }}>
-            <td style={{ padding: '10px' }}><link to={"/users/" + user._id + "?react=889"}>Ver detalles{user._id}</link></td>
+            <td style={{ padding: '10px' }}>
+                <Link to={"/users/" + user.username + "?react=889"}>
+                    Ver detalles
+                </Link>
+            </td>
             <td style={{ padding: '10px' }}>{user.name}</td>
             <td style={{ padding: '10px' }}>
                 <button 

@@ -13,17 +13,17 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 
-const pages = ['Login', 'Profile', 'Admin'];
-const settings = ['Profile'];
+const pages = ['Profile', 'Admin'];
+const settings = ['Profile', 'Logout'];
 
 const getPath = (page) =>
-  page === 'Login' ? '/' :
   page === 'Profile' ? '/prof' :
   page === 'Admin' ? '/admin' :
   '/';
 
-function ResponsiveAppBar() {
+function ResponsiveAppBar({ setIsLogin }) {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -43,6 +43,16 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
+  const handleSettingClick = (setting) => {
+    handleCloseUserMenu();
+    if (setting === 'Logout') {
+      setIsLogin(false);
+      navigate('/');
+    } else if (setting === 'Profile') {
+      navigate('/prof');
+    }
+  };
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -52,7 +62,7 @@ function ResponsiveAppBar() {
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -105,7 +115,7 @@ function ResponsiveAppBar() {
             variant="h5"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -132,8 +142,8 @@ function ResponsiveAppBar() {
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, color: 'white' }}>
+                <AccountCircle fontSize="large" />
               </IconButton>
             </Tooltip>
             <Menu
@@ -153,10 +163,7 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={() => { 
-                  if (setting === 'Profile') navigate('/prof'); 
-                  handleCloseUserMenu(); 
-                }}>
+                <MenuItem key={setting} onClick={() => handleSettingClick(setting)}>
                   <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
                 </MenuItem>
               ))}
