@@ -3,9 +3,12 @@ import { useNavigate } from 'react-router-dom'
 import '../App.css'
 import Add from '../components/Add';
 import User from '../components/User';
+import LifeCycle from '../components/LifeCycle';
 
 
 const Admin = ({ users, delUser, addUser, getUsers }) => {
+  const [showLifeCycle, setShowLifeCycle] = React.useState(false);
+
   React.useEffect(() => {
     getUsers();
   }, []);
@@ -13,6 +16,12 @@ const Admin = ({ users, delUser, addUser, getUsers }) => {
   return (
     <div>
         <h1>Administración de Usuarios</h1>
+        <button onClick={() => setShowLifeCycle(!showLifeCycle)}>
+            {showLifeCycle ? 'Ocultar Demo' : 'Mostrar Demo'}
+        </button>
+
+        {showLifeCycle && <LifeCycle />}
+
         <Add addUser={addUser} />
         <table style={{ width: '100%', marginTop: '20px', borderCollapse: 'collapse' }}>
             <thead>
